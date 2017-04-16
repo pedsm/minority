@@ -1,7 +1,7 @@
 html
 	head
 		link(href='/startup.css', rel='stylesheet')
-		link(href='css/main.css', rel='stylesheet')
+		link(href='/css/main.css', rel='stylesheet')
 		title Minority!
 	body
 		#container
@@ -11,4 +11,5 @@ html
 				input(type="submit", value="Make a game")
 			form(action="join")
 				input(type="submit", value="Join a game")
-				input(id="clone",name="name",type="text", placeholder="Name", required)
+				input(id="clone",name="name",type="hidden", placeholder="Name", required)
+	script(src="/js/index.js")

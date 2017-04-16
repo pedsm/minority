@@ -23,7 +23,7 @@ app.get('/make',(req,res)=>{
 	games.push(tmp)
 	console.log("New game with code " + tmp.getCode() + " started")
 	console.log("Current games:" + games.length)
-	res.render('make',{code : tmp.getCode()})
+	res.render('make',{code : tmp.getCode(), name:req.query.name})
 })
 
 //Logic stuff
