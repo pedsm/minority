@@ -1,0 +1,37 @@
+$red : #e74c3c;
+$darkRed : #c0392b;
+$amethyst:#9b59b6;
+$wisteria:#8e44ad;
+
+
+@mixin gradient($light, $dark) {
+	background: $dark; /* Old browsers */
+	background: -webkit-linear-gradient(-45deg, $light 0%,$dark 100%); /* Chrome10-25,Safari5.1-6 */
+	background:    -moz-linear-gradient(-45deg, $light 0%,$dark 100%); /* FF3.6-15 */
+	background:         linear-gradient(135deg, $light 0%,$dark 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$light', endColorstr='$dark',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+body{
+	@include gradient($red, $darkRed);
+}
+#container{
+	text-align: center;
+	margin: 30vh auto;
+}
+h1{
+	font-size: 6em;
+	color:white;
+}
+p{
+	@include gradient($amethyst,$wisteria);
+	color:white;
+	width:80%;
+	margin:1em auto;
+	padding:1em;
+	a{
+		color:white;
+		text-decoration: none;
+		width:100%;
+	}
+}
