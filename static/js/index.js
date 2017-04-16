@@ -1,5 +1,7 @@
 var input  = document.getElementById("input")
 var input2 = document.getElementById("input2")
+var q1 = document.getElementById("q1")
+var q1 = document.getElementById("q2")
 var makeBt = document.getElementById("button1")
 var joinBt = document.getElementById("button2")
 var submitBt = document.getElementById("button3")
@@ -54,11 +56,15 @@ function updateList() {
 //Starts the game
 function startGame() {
 	container.style.display = "none"
-	gameView.style.display = "block"
-	socket.emit('start')
+	if(gameMaster){
+		master.style.display = "block"
+	}else{
+		gameView.style.display = "block"
+	}
 }
-function submit(){
-	
+//submit a question
+button3.onclick = function (){
+	socket.emit('question',{q1:q1.value,q2:q2.value})
 }
 //Update's the list of players on the waiting room
 socket.on('updateGame',(data)=>{
@@ -72,7 +78,7 @@ socket.on('updateGame',(data)=>{
 		// }
 		// if(game.players.length > 2) {
 			makeBt.childNodes[0].innerHTML = "Everybody's in!"
-			makeBt.onclick = ()=>{socket.emit('start')}
+			makeBt.onclick = ()=>{socket.emit('start',game.code)}
 		// }
 	}else{
 		if(gameMaster == false)
@@ -90,4 +96,7 @@ socket.on('joined',(data)=> {
 	console.log("Joined a room")
 	msg.innerHTML = "Your room code: " + game.code
 	updateList()
+})
+socket.on('start',(data)=>{
+	startGame()
 })

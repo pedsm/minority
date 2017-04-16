@@ -46,6 +46,10 @@ io.on('connection',(socket)=> {
 		// TODO: Add error checking
 		tmp.updateList();
 	})
+	socket.on('start',(data)=>{
+		var tmp = findGame(data);
+		tmp.start();
+	})
 	socket.on('disconnect',()=>
 	{
 		console.log("Connection Dropped")
@@ -71,6 +75,17 @@ class Game {
 	updateList() {
 		this.players.forEach((player)=>{
 			io.sockets.connected[player.cid].emit('updateGame',this)
+		})
+	}
+	start(){
+		this.players.forEach((player)=>{
+			io.sockets.connected[player.cid].emit('start')
+		})
+	}
+	question(q)
+	{
+		this.players.forEach((player)=>{
+			io.sockets.connected[player.cid].emit('submit',q)
 		})
 	}
 }
