@@ -11,21 +11,25 @@ $wisteria:#8e44ad;
 	background:         linear-gradient(135deg, $light 0%,$dark 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$light', endColorstr='$dark',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
-
+*{
+	color:white;
+}
 body{
 	@include gradient($red, $darkRed);
 }
 #container{
 	text-align: center;
-	margin: 30vh auto;
+	margin: 15vh auto;
+}
+#make{
+	text-align: center;
+	margin: auto;
 }
 h1{
 	font-size: 6em;
-	color:white;
 }
 p{
 	@include gradient($amethyst,$wisteria);
-	color:white;
 	width:80%;
 	margin:1em auto;
 	padding:1em;
@@ -33,5 +37,21 @@ p{
 		color:white;
 		text-decoration: none;
 		width:100%;
+		font-size:1.5em;
+	}
+}
+input{
+	@include gradient($amethyst,$wisteria);
+	font-size: 1.5em;
+	width:80%;
+	margin:1em auto;
+	padding:1em;
+	border:none;
+}
+ul{
+	padding:10px;
+	li{
+		display:block;
+		font-size: 2em;
 	}
 }

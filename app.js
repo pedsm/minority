@@ -23,7 +23,7 @@ app.get('/make',(req,res)=>{
 	games.push(tmp)
 	console.log("New game with code " + tmp.getCode() + " started")
 	console.log("Current games:" + games.length)
-	res.send(tmp.getCode())
+	res.render('make',{code : tmp.getCode()})
 })
 
 //Logic stuff
@@ -45,7 +45,6 @@ class Player {
 		this.plays = 0
 	}
 }
-//TODO: make it static 
 function generateCode()
 {
 	var code = [0,0,0,0]

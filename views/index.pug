@@ -6,7 +6,9 @@ html
 	body
 		#container
 			h1 Minority!
-			p
-				a(href="/make") Make a game
-			p
-				a(href="/join") Join a game 
+			form(action="make")
+				input(id="real",name="name",type="text", placeholder="Name", required)
+				input(type="submit", value="Make a game")
+			form(action="join")
+				input(type="submit", value="Join a game")
+				input(id="clone",name="name",type="text", placeholder="Name", required)
