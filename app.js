@@ -24,15 +24,27 @@ app.get('/',(req,res)=>{
 
 //Real time stuff
 io.on('connection',(socket)=> {
+	socket.cid = ids++
 	console.log("Connection Made.");
-	//User selected a name
+	//User selected a name and made a game
 	socket.on('make',(data)=>{
-		var ptmp = new Player(data,socket)
+		var ptmp = new Player(data,socket.id)
+		console.log(ptmp)
 		var tmp = new Game();
 		var id = tmp.addPlayer(ptmp)
 		games.push(tmp)
 		console.log("Game created:"+tmp.getCode())
-		socket.emit('joined',{game:tmp.strip(), id:id})
+		socket.emit('joined',{game:tmp, id:id})
+	})
+	//user is joining a game
+	socket.on('join',(data)=>{
+		var ptmp = new Player(data.name,socket.id)
+		var tmp = findGame(data.room)
+		tmp.addPlayer(ptmp)
+		console.log(tmp)
+		// var id = tmp.addPlayer(ptmp)
+		// TODO: Add error checking
+		tmp.updateList();
 	})
 	socket.on('disconnect',()=>
 	{
@@ -55,28 +67,20 @@ class Game {
 	getCode(){
 		return this.code;
 	}
-	//remove socket from players in order to send the data to the client
-	strip(){
-		var tPlayers = []
-		this.players.forEach((player)=> {
-			var tmp = player;
-			tmp.connection = null;
-			tPlayers.push(tmp)
+	//Updates current player list
+	updateList() {
+		this.players.forEach((player)=>{
+			io.sockets.connected[player.cid].emit('updateGame',this)
 		})
-		return {
-			code:this.code,
-			round:this.round,
-			players:tPlayers
-		}
 	}
 }
 
 class Player {
-	constructor(name,conn) {
+	constructor(name,cid) {
 		this.name = name
 		this.score = 0
 		this.plays = 0
-		this.connection = conn
+		this.cid = cid
 	}
 }
 function generateCode()
@@ -96,5 +100,5 @@ function generateCode()
 }
 //find a specific game
 function findGame(code) {
-	return games.filter((game)=>{return game.getCode == code})
+	return games.filter((game)=>{return game.getCode() == code})[0]
 }
