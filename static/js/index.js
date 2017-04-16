@@ -1,6 +1,7 @@
 var input  = document.getElementById("input")
 var makeBt = document.getElementById("button1")
 var joinBt = document.getElementById("button2")
+var container = document.getElementById("container")
 
 var socket = io()
 var game   = null
@@ -15,6 +16,9 @@ function makeGame()
 {
 	socket.emit('make', input.value)
 	gameMaster = true;
+	container.style.margin = "auto"
+	makeBt.childNodes[0].innerHTML = "Everyone is in!"
+	joinBt.style.visibility = "hidden"
 }
 
 socket.on('joined',(data)=> {

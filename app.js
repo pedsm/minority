@@ -7,7 +7,8 @@ var express = require("express"),
 
 //Global varaibles
 var games = []
-var curGame = 0;
+var curGame = 0
+var ids = 0 
 
 app.set('view engine', 'pug')
 app.use(express.static('static'))
@@ -26,12 +27,12 @@ io.on('connection',(socket)=> {
 	console.log("Connection Made.");
 	//User selected a name
 	socket.on('make',(data)=>{
-		var tmpP = new Player();
+		var ptmp = new Player(data,socket)
 		var tmp = new Game();
-		var id = tmp.addPlayer(tmpP)
+		var id = tmp.addPlayer(ptmp)
 		games.push(tmp)
 		console.log("Game created:"+tmp.getCode())
-		socket.emit('joined',{game:tmp, id:id})
+		socket.emit('joined',{game:tmp.strip(), id:id})
 	})
 	socket.on('disconnect',()=>
 	{
@@ -54,13 +55,28 @@ class Game {
 	getCode(){
 		return this.code;
 	}
+	//remove socket from players in order to send the data to the client
+	strip(){
+		var tPlayers = []
+		this.players.forEach((player)=> {
+			var tmp = player;
+			tmp.connection = null;
+			tPlayers.push(tmp)
+		})
+		return {
+			code:this.code,
+			round:this.round,
+			players:tPlayers
+		}
+	}
 }
 
 class Player {
-	constructor(name) {
+	constructor(name,conn) {
 		this.name = name
 		this.score = 0
 		this.plays = 0
+		this.connection = conn
 	}
 }
 function generateCode()
