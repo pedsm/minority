@@ -2,9 +2,12 @@ var input  = document.getElementById("input")
 var input2 = document.getElementById("input2")
 var makeBt = document.getElementById("button1")
 var joinBt = document.getElementById("button2")
+var submitBt = document.getElementById("button3")
 var container = document.getElementById("container")
 var playerlist = document.getElementById("players")
 var msg = document.getElementById("msg")
+var gameView = document.getElementById("game")
+var master = document.getElementById("master")
 
 var socket = io()
 var game   = null
@@ -22,6 +25,7 @@ function makeGame() {
 	gameMaster = true;
 	container.style.margin = "auto"
 	makeBt.childNodes[0].innerHTML = "Nobody is in..."
+	makeBt.onclick = ()=> {}
 	joinBt.style.display = "none"
 	msg.style.display = "block";
 }
@@ -49,18 +53,33 @@ function updateList() {
 }
 //Starts the game
 function startGame() {
+	container.style.display = "none"
+	gameView.style.display = "block"
+	socket.emit('start')
+}
+function submit(){
 	
 }
 //Update's the list of players on the waiting room
 socket.on('updateGame',(data)=>{
 	game = data
-	updateList()
-	if(game.players.length == 2) {
-		makeBt.childNodes[0].innerHTML = "You need more than 2"
-	}
-	if(game.players.length > 2) {
-		makeBt.childNodes[0].innerHTML = "Everybody's in!"
-		startGame()
+	if(game.round == 0)
+	{
+		updateList()
+		// TODO: Remove this for actual production
+		// if(game.players.length == 2) {
+		// 	makeBt.childNodes[0].innerHTML = "You need more than 2"
+		// }
+		// if(game.players.length > 2) {
+			makeBt.childNodes[0].innerHTML = "Everybody's in!"
+			makeBt.onclick = ()=>{socket.emit('start')}
+		// }
+	}else{
+		if(gameMaster == false)
+		{
+			container.style.display = "none"
+			players.style.display = "none"
+		}
 	}
 })
 //Receives and stores the game state

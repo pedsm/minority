@@ -7,12 +7,26 @@ html
 	body
 		#container
 			h1 Minority!
-			h3#msg(style="display:none;")
 			input(id="input",type="text", placeholder="Name")
 			input(id="input2",type="text", placeholder="Room Code",style="display:none;")
+			h3#msg(style="display:none;")
 			a(id="button1")
 				p Make a game
 			a(id="button2")
 				p Join a game 
-		ul#players
+			ul#players
+		#master
+			h2 Choose the options!
+			input(id="q1",type="text", placeholder="Option 1")
+			input(id="q2",type="text", placeholder="Option 2")
+			a(id="button3")
+				p Submit 
+		#game(style="display:none;")
+			//- h1 This is the game
+			#msger
+				h3 Wait for the question...
+			#ans1
+				h3 Answer 1 
+			#ans2
+				h3 Answer 2
 	script(src="/js/index.js")
