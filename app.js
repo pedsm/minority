@@ -51,9 +51,15 @@ io.on('connection',(socket)=> {
 		tmp.start();
 	})
 	socket.on('question',(data)=>{
-		console.log(data)
 		var tmp = findGame(data.code)
 		tmp.question(data)
+	})
+	socket.on('reply',(data)=>{
+		var tmp = findGame(data.code)
+		tmp.replies.push(data.value)
+		if(tmp.replies.length == playes.replies.length){
+			tmp.results();
+		}
 	})
 	socket.on('disconnect',()=>
 	{
@@ -68,6 +74,7 @@ class Game {
 		this.players = []
 		//round 0 indicates a game that has not started
 		this.round = 0
+		this.replies = []
 	}
 	addPlayer(pl){
 		this.players.push(pl)
@@ -89,9 +96,16 @@ class Game {
 	}
 	question(q)
 	{
+		this.round++
 		console.log(q)
 		this.players.forEach((player)=>{
 			io.sockets.connected[player.cid].emit('question',q)
+		})
+	}
+	results(){
+		var avg = this.answer.reduce((ac,val)=>{ac+val},0)/this.players.length
+		this.players.forEach((player)=>{
+			io.sockets.connected[player.cid].emit('result',avg)
 		})
 	}
 }

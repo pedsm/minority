@@ -12,12 +12,15 @@ var gameView = document.getElementById("game")
 var master = document.getElementById("master")
 var ans1 = document.getElementById("ans1")
 var ans2 = document.getElementById("ans2")
+var msger = document.getElementById("msger")
+var stats = document.getElementById("stats")
 
 var socket = io()
 var game   = null
 var player = null
 var gameMaster = false
 var id = null
+var lastR = null
 
 //Listeners
 makeBt.onclick = makeGame
@@ -61,8 +64,14 @@ function startGame() {
 	if(gameMaster){
 		master.style.display = "block"
 	}else{
-		gameView.style.display = "block"
+		stats.style.display = "block"
 	}
+}
+//reply question
+function reply(value){
+	lastR = value;
+	socket.emit('reply',{value:value,code:game.code})
+	msger.childNodes[0].innerHTML = "Waiting for other replies..."
 }
 //submit a question
 button3.onclick = function (){
@@ -105,8 +114,11 @@ socket.on('start',(data)=>{
 //receive question
 socket.on('question',(data)=>{
 	master.style.display = "none"
+	stats.style.display = "none"
 	gameView.style.display = "block"
 	ans1.childNodes[0].innerHTML = data.q1
 	ans2.childNodes[0].innerHTML = data.q2
-	
+	ans1.onclick = ()=>{reply(0)}
+	ans2.onclick = ()=>{reply(1)}
+	msger.childNodes[0].innerHTML = ""
 })
