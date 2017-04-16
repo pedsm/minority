@@ -2,6 +2,7 @@ $red : #e74c3c;
 $darkRed : #c0392b;
 $amethyst:#9b59b6;
 $wisteria:#8e44ad;
+$placeholder:#ddd;
 
 
 @mixin gradient($light, $dark) {
@@ -50,11 +51,24 @@ p{
 }
 input{
 	@include gradient($amethyst,$wisteria);
+	color:#ddd;
 	font-size: 1.5em;
 	width:80%;
 	margin:1em auto;
 	padding:1em;
 	border:none;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $placeholder;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $placeholder;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $placeholder;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $placeholder;
 }
 ul{
 	text-align: center;
@@ -79,6 +93,7 @@ ul{
 	}
 }
 #msger{
+	position:absolute;
 	h3{
 		padding: 5px;
 	}

@@ -21,6 +21,7 @@ var player = null
 var gameMaster = false
 var id = null
 var lastR = null
+var lastAnswers = []
 
 //Listeners
 makeBt.onclick = makeGame
@@ -116,9 +117,28 @@ socket.on('question',(data)=>{
 	master.style.display = "none"
 	stats.style.display = "none"
 	gameView.style.display = "block"
+	lastAnswers[0] = data.q1
+	lastAnswers[1] = data.q2
 	ans1.childNodes[0].innerHTML = data.q1
 	ans2.childNodes[0].innerHTML = data.q2
 	ans1.onclick = ()=>{reply(0)}
 	ans2.onclick = ()=>{reply(1)}
 	msger.childNodes[0].innerHTML = ""
+})
+socket.on('result',(data)=>{
+	gameView.style.display = "none"
+	if(gameMaster){
+		master.style.display = "block"
+	}else{
+		stats.style.display = "block"
+		if(Math.abs(lastR - data) < 0.5)
+		{
+			stats.childNodes[0].innerHTML = "You were right"
+		}
+		else {
+			stats.childNodes[0].innerHTML = "You were wrong"
+		}
+		console.log(data)
+		stats.childNodes[1].innerHTML = Math.round(data*100)+ "% said " + lastAnswers[Math.round(data)]
+	}
 })

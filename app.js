@@ -57,7 +57,7 @@ io.on('connection',(socket)=> {
 	socket.on('reply',(data)=>{
 		var tmp = findGame(data.code)
 		tmp.replies.push(data.value)
-		if(tmp.replies.length == playes.replies.length){
+		if(tmp.replies.length == tmp.players.length){
 			tmp.results();
 		}
 	})
@@ -103,9 +103,10 @@ class Game {
 		})
 	}
 	results(){
-		var avg = this.answer.reduce((ac,val)=>{ac+val},0)/this.players.length
+		var avg = this.replies.reduce((ac,val)=>{return ac+val})/this.players.length
 		this.players.forEach((player)=>{
 			io.sockets.connected[player.cid].emit('result',avg)
+			this.replies = []
 		})
 	}
 }
