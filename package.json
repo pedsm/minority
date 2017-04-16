@@ -1,0 +1,25 @@
+{
+  "name": "minority",
+  "version": "1.0.0",
+  "description": "Would you rather?",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedsm/minority.git"
+  },
+  "author": "Pedro Mendonca",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedsm/minority/issues"
+  },
+  "homepage": "https://github.com/pedsm/minority#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mocha": "^3.2.0",
+    "pug": "^2.0.0-beta11",
+    "socket.io": "^1.7.3"
+  }
+}
