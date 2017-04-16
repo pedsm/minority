@@ -37,12 +37,12 @@ p {
   /* IE6-9 fallback on horizontal gradient */
   width: 80%;
   margin: 1em auto;
-  padding: 1em; }
+  padding: 1em;
+  font-size: 1.5em; }
   p a {
     color: white;
     text-decoration: none;
-    width: 100%;
-    font-size: 1.5em; }
+    width: 100%; }
 
 input {
   background: #8e44ad;

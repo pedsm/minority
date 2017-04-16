@@ -2,7 +2,8 @@
 const port = 3000
 var express = require("express"),
 	app     = express(),
-	io      = require('socket.io')(port+1)
+	http    = require('http').Server(app),
+	io      = require('socket.io')(http)
 
 //Global varaibles
 var games = []
@@ -11,31 +12,31 @@ var curGame = 0;
 app.set('view engine', 'pug')
 app.use(express.static('static'))
 app.use(express.static('node_modules/startup.css/css'))
-app.listen(port,()=> {
+app.use(express.static('node_modules/socket.io-client/dist'))
+http.listen(port,()=> {
 	console.log("Starting server on port "+ port)
 })
 
 app.get('/',(req,res)=>{
 	res.render('index')
 })
-app.get('/make',(req,res)=>{
-	var tmp = new Game()
-	games.push(tmp)
-	console.log("New game with code " + tmp.getCode() + " started")
-	console.log("Current games:" + games.length)
-	res.render('make',{code : tmp.getCode(), name:req.query.name})
-})
-app.get('/join', (req,res)=> {
-	res.render('join', {name:req.query.name})
-})
 
 //Real time stuff
 io.on('connection',(socket)=> {
+	console.log("Connection Made.");
 	//User selected a name
-	socket.on('name',(data)=>{
-		
+	socket.on('make',(data)=>{
+		var tmpP = new Player();
+		var tmp = new Game();
+		var id = tmp.addPlayer(tmpP)
+		games.push(tmp)
+		console.log("Game created:"+tmp.getCode())
+		socket.emit('joined',{game:tmp, id:id})
 	})
-	
+	socket.on('disconnect',()=>
+	{
+		console.log("Connection Dropped")
+	})
 })
 
 //Logic stuff
@@ -43,7 +44,12 @@ class Game {
 	constructor(){
 		this.code = generateCode()
 		this.players = []
-		this.round = 1
+		//round 0 indicates a game that has not started
+		this.round = 0
+	}
+	addPlayer(pl){
+		this.players.push(pl)
+		return this.players.length - 1 
 	}
 	getCode(){
 		return this.code;

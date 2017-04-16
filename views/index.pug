@@ -1,15 +1,15 @@
 html
 	head
+		script(src="/socket.io.js")
 		link(href='/startup.css', rel='stylesheet')
 		link(href='/css/main.css', rel='stylesheet')
 		title Minority!
 	body
 		#container
 			h1 Minority!
-			form(action="make")
-				input(id="real",name="name",type="text", placeholder="Name", required)
-				input(type="submit", value="Make a game")
-			form(action="join")
-				input(type="submit", value="Join a game")
-				input(id="clone",name="name",type="hidden", placeholder="Name", required)
+			input(id="input",type="text", placeholder="Name")
+			a(id="button1")
+				p Make a game
+			a(id="button2")
+				p Join a game 
 	script(src="/js/index.js")
