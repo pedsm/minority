@@ -25,6 +25,18 @@ app.get('/make',(req,res)=>{
 	console.log("Current games:" + games.length)
 	res.render('make',{code : tmp.getCode(), name:req.query.name})
 })
+app.get('/join', (req,res)=> {
+	res.render('join', {name:req.query.name})
+})
+
+//Real time stuff
+io.on('connection',(socket)=> {
+	//User selected a name
+	socket.on('name',(data)=>{
+		
+	})
+	
+})
 
 //Logic stuff
 class Game {
