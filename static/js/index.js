@@ -1,7 +1,7 @@
 var input  = document.getElementById("input")
 var input2 = document.getElementById("input2")
 var q1 = document.getElementById("q1")
-var q1 = document.getElementById("q2")
+var q2 = document.getElementById("q2")
 var makeBt = document.getElementById("button1")
 var joinBt = document.getElementById("button2")
 var submitBt = document.getElementById("button3")
@@ -10,6 +10,8 @@ var playerlist = document.getElementById("players")
 var msg = document.getElementById("msg")
 var gameView = document.getElementById("game")
 var master = document.getElementById("master")
+var ans1 = document.getElementById("ans1")
+var ans2 = document.getElementById("ans2")
 
 var socket = io()
 var game   = null
@@ -64,7 +66,7 @@ function startGame() {
 }
 //submit a question
 button3.onclick = function (){
-	socket.emit('question',{q1:q1.value,q2:q2.value})
+	socket.emit('question',{q1:q1.value,q2:q2.value, code:game.code})
 }
 //Update's the list of players on the waiting room
 socket.on('updateGame',(data)=>{
@@ -99,4 +101,12 @@ socket.on('joined',(data)=> {
 })
 socket.on('start',(data)=>{
 	startGame()
+})
+//receive question
+socket.on('question',(data)=>{
+	master.style.display = "none"
+	gameView.style.display = "block"
+	ans1.childNodes[0].innerHTML = data.q1
+	ans2.childNodes[0].innerHTML = data.q2
+	
 })

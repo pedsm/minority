@@ -50,6 +50,11 @@ io.on('connection',(socket)=> {
 		var tmp = findGame(data);
 		tmp.start();
 	})
+	socket.on('question',(data)=>{
+		console.log(data)
+		var tmp = findGame(data.code)
+		tmp.question(data)
+	})
 	socket.on('disconnect',()=>
 	{
 		console.log("Connection Dropped")
@@ -84,8 +89,9 @@ class Game {
 	}
 	question(q)
 	{
+		console.log(q)
 		this.players.forEach((player)=>{
-			io.sockets.connected[player.cid].emit('submit',q)
+			io.sockets.connected[player.cid].emit('question',q)
 		})
 	}
 }
