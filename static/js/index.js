@@ -131,14 +131,19 @@ socket.on('result',(data)=>{
 		master.style.display = "block"
 	}else{
 		stats.style.display = "block"
-		if(Math.abs(lastR - data) < 0.5)
-		{
-			stats.childNodes[0].innerHTML = "You were right"
-		}
-		else {
-			stats.childNodes[0].innerHTML = "You were wrong"
-		}
-		console.log(data)
-		stats.childNodes[1].innerHTML = Math.round(data*100)+ "% said " + lastAnswers[Math.round(data)]
 	}
+	if(Math.abs(lastR - data) < 0.5)
+	{
+		stats.childNodes[0].innerHTML = "You were right"
+		master.childNodes[0].innerHTML = "You were right"
+	}
+	else {
+		stats.childNodes[0].innerHTML = "You were wrong"
+		master.childNodes[0].innerHTML = "You were wrong"
+	}
+	console.log(data)
+	if(data == 0)
+		data = 1
+	stats.childNodes[1].innerHTML = (data*100).toFixed(2)+ "% said " + lastAnswers[Math.round(data)]
+	master.childNodes[1].innerHTML = (data*100).toFixed(2)+ "% said " + lastAnswers[Math.round(data)]
 })
